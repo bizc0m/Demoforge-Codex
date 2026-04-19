@@ -2,6 +2,24 @@
 
 Editeur demoscene HTML simple avec gestion des calques, des versions numerotees et des exports.
 
+## Publication web et versionning
+
+Le depot est maintenant structure pour une publication statique simple sur Vercel ou GitHub Pages:
+
+- `index.html` = version active a ouvrir en public
+- `versionning.html` = historique public des versions
+- `sources.html` = credits et references
+- `data/versions.json` = registre machine-readable
+- `versions/vX/` = dossier stable par version archivee
+
+Mode de fonctionnement recommande:
+
+1. generer une nouvelle version
+2. l'archiver dans `versions/`
+3. mettre a jour `data/versions.json`
+4. garder `index.html` comme derniere version active
+5. pousser sur GitHub pour redeployer sur Vercel
+
 ## Fonctions principales
 
 - Gestion de la hierarchie des calques

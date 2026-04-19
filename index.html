@@ -101,6 +101,36 @@
       gap: 8px;
     }
 
+    .hero-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hero-nav a,
+    .quick-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(6, 12, 23, 0.58);
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+    }
+
+    .hero-nav a:hover,
+    .hero-nav a:focus-visible,
+    .quick-link:hover,
+    .quick-link:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(14, 27, 53, 0.84);
+    }
+
     .hero h1 {
       font-size: 1.08rem;
       line-height: 1.05;
@@ -418,6 +448,13 @@
     <aside class="panel">
       <div class="hero">
         <h1>CNC Coding Is Not A Crime</h1>
+        <p class="muted">Version active publiee en racine. Les archives, le versionning et les sources sont exposes pour Vercel et GitHub Pages.</p>
+        <div class="hero-nav">
+          <a href="./index.html">Derniere version</a>
+          <a href="./versionning.html">Versionning</a>
+          <a href="./sources.html">Sources</a>
+          <a href="./versions/v1.7/">Archive active</a>
+        </div>
       </div>
 
       <div class="section">
@@ -802,6 +839,10 @@
       </div>
       <p><a href="https://www.demoparty.net/" target="_blank" rel="noreferrer">https://www.demoparty.net/</a></p>
       <p><a href="https://www.culture.gouv.fr/thematiques/patrimoine-culturel-immateriel/vivre-le-patrimoine-culturel-immateriel/reportages/la-demoscene-une-culture-libre-a-la-croisee-des-arts-et-de-la-technique" target="_blank" rel="noreferrer">https://www.culture.gouv.fr/thematiques/patrimoine-culturel-immateriel/vivre-le-patrimoine-culturel-immateriel/reportages/la-demoscene-une-culture-libre-a-la-croisee-des-arts-et-de-la-technique</a></p>
+      <div class="hero-nav">
+        <a href="./versionning.html">Voir toutes les versions</a>
+        <a href="./sources.html">Voir les sources et credits</a>
+      </div>
     </section>
   </main>
 
