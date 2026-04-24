@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DemoForge V5.88</title>
+<style>
+html,body{margin:0;height:100%;background:#050505;color:#f2f2f2;font-family:Arial,Helvetica,sans-serif;overflow:hidden}#ui{position:fixed;left:12px;top:12px;width:310px;max-height:calc(100vh - 24px);overflow:auto;background:rgba(0,0,0,.78);border:1px solid #7CFC00;border-radius:14px;padding:14px;z-index:5}h1{font-size:18px;color:#7CFC00;margin:0 0 8px}label{display:block;margin:10px 0;font-size:12px}select,input,button{width:100%;box-sizing:border-box;margin-top:5px;background:#111;color:#fff;border:1px solid #444;border-radius:8px;padding:8px}button{background:#7CFC00;color:#020;font-weight:900;cursor:pointer}canvas{display:block;width:100vw;height:100vh;image-rendering:pixelated}.pill{display:inline-block;border:1px solid #7CFC00;color:#7CFC00;border-radius:999px;padding:3px 8px;font-size:11px;margin:3px 0}.small{font-size:11px;color:#aaa;line-height:1.4}</style>
+</head>
+<body>
+<div id="ui">
+<h1>V5.88 : Level Demos</h1>
+<div class="pill">DemoForge pushed to GitHub</div>
+<label>Niveau
+<select id="level">
+<option>NOOBS</option><option>LITE</option><option>GEEK</option><option>NERDS</option><option>PRO</option><option selected>MAX</option>
+</select></label>
+<label>Stars <input id="stars" type="range" min="20" max="900" value="500"></label>
+<label>Rasters <input id="bars" type="range" min="0" max="60" value="34"></label>
+<label>Speed <input id="speed" type="range" min="1" max="80" value="36"></label>
+<label>Amplitude <input id="amp" type="range" min="0" max="80" value="34"></label>
+<label>Logo size <input id="size" type="range" min="20" max="90" value="56"></label>
+<button id="apply">Charger demo niveau</button>
+<button id="export">Exporter HTML</button>
+<p class="small">Niveaux inclus : NOOBS, LITE, GEEK, NERDS, PRO, MAX. Chaque niveau charge une démo simple et les 5 paramètres agissent en temps réel.</p>
+<p class="small">Mots de passe fun dans le code : NOOBS / LITE-1911 / GEEK-CODE / NERDS-ASM / RAZOR-1911-PRO / DEMOFORGE-MAX.</p>
+</div>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+const PASSWORDS={NOOBS:'NOOBS',LITE:'LITE-1911',GEEK:'GEEK-CODE',NERDS:'NERDS-ASM',PRO:'RAZOR-1911-PRO',MAX:'DEMOFORGE-MAX'};
+const CRYPTO={NOOBS:'ROT13 Toy Gate',LITE:'Base64 Scene Wrapper',GEEK:'XOR Sprite Scrambler',NERDS:'ASM Copper Cipher',PRO:'Razor Keygen Theatre',MAX:'Maximum Poney Crypto 4096'};
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');let W=480,H=270,t=0,stars=[];const $=id=>document.getElementById(id);
+function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=innerWidth*d;canvas.height=innerHeight*d;ctx.setTransform(d,0,0,d,0,0)}addEventListener('resize',resize);resize();
+function makeStars(){stars=Array.from({length:900},()=>({x:Math.random()*W,y:Math.random()*H,z:.3+Math.random()*2.4,s:.5+Math.random()*2}))}makeStars();
+const presets={NOOBS:[90,0,8,5,34,'#7CFC00','NOOBS DEMO'],LITE:[160,6,12,8,38,'#00e5ff','LITE DEMO'],GEEK:[250,14,18,14,44,'#ffcc00','GEEK DEMO'],NERDS:[340,22,24,22,48,'#8b5cf6','NERDS DEMO'],PRO:[460,32,30,30,52,'#ff2d75','PRO DEMO'],MAX:[650,44,42,42,60,'#ffffff','MAX DEMO']};
+function applyLevel(){let p=presets[$('level').value];$('stars').value=p[0];$('bars').value=p[1];$('speed').value=p[2];$('amp').value=p[3];$('size').value=p[4]}$('apply').onclick=applyLevel;
+function val(id){return Number($(id).value)}
+function drawScene(){const sc=Math.max(innerWidth/W,innerHeight/H),ox=(innerWidth-W*sc)/2,oy=(innerHeight-H*sc)/2;ctx.save();ctx.fillStyle='#000';ctx.fillRect(0,0,innerWidth,innerHeight);ctx.translate(ox,oy);ctx.scale(sc,sc);let lvl=$('level').value,p=presets[lvl],color=p[5],name=p[6],speed=val('speed'),amp=val('amp'),bars=val('bars'),count=val('stars'),size=val('size');let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#02030a');g.addColorStop(.55,'#09001f');g.addColorStop(1,'#000');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+for(let i=0;i<count;i++){let s=stars[i];s.y+=.05*s.z*speed/10;if(s.y>H){s.y=0;s.x=Math.random()*W}ctx.fillStyle=s.z>1.6?'#fff':color;ctx.fillRect(s.x,s.y,s.s,s.s)}
+ctx.strokeStyle=color;ctx.globalAlpha=.55;for(let i=0;i<16;i++){let y=155+i*i*.55;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}for(let i=-14;i<=14;i++){let x=W/2+i*18;ctx.beginPath();ctx.moveTo(W/2,155);ctx.lineTo(x,H);ctx.stroke()}ctx.globalAlpha=1;
+for(let i=0;i<bars;i++){let y=130+(i/Math.max(1,bars))*95+Math.sin(t*.035+i*.6)*amp*.5;let gr=ctx.createLinearGradient(40,y,W-40,y);gr.addColorStop(0,color);gr.addColorStop(.5,'#00e5ff');gr.addColorStop(1,color);ctx.fillStyle=gr;ctx.fillRect(40,y,W-80,4)}
+ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='900 '+size+'px Arial Black,Impact,sans-serif';ctx.lineWidth=8;ctx.strokeStyle='#000';ctx.strokeText(name,W/2,70+Math.sin(t*.035)*amp*.25);ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=18;ctx.fillText(name,W/2,70+Math.sin(t*.035)*amp*.25);ctx.shadowBlur=0;
+ctx.font='900 14px monospace';ctx.fillStyle='#fff7ad';ctx.strokeStyle='#000';ctx.lineWidth=4;ctx.strokeText(CRYPTO[lvl],W/2,112);ctx.fillText(CRYPTO[lvl],W/2,112);
+let msg='*** DEMOFORGE V5.88 *** '+lvl+' MODE *** FIVE LIVE PARAMETERS *** CODING IS NOT A CRIME *** ';ctx.font='900 22px Arial Black,Impact,sans-serif';ctx.textAlign='left';let x=W-((t*speed/5)%(W+msg.length*15));for(let i=0;i<msg.length;i++){let px=x+i*15,py=155+Math.sin(t*.08+i*.28)*amp*.18;if(px>-30&&px<W+30){ctx.lineWidth=5;ctx.strokeStyle='#000';ctx.strokeText(msg[i],px,py);ctx.fillStyle=i%2?color:'#fff';ctx.fillText(msg[i],px,py)}}
+ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,246,W,24);ctx.font='900 11px monospace';ctx.textAlign='left';let foot='   GITHUB BUILD · DEMOFORGE · '+lvl+' · ';let fx=W-((t*speed/10)%(W+foot.length*8));ctx.fillStyle=color;ctx.fillText(foot,fx,260);ctx.restore();t++;requestAnimationFrame(drawScene)}drawScene();
+function exportHtml(){const html='<!DOCTYPE html>'+document.documentElement.outerHTML;const blob=new Blob([html],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='demoforge_V5.88_export.html';a.click();URL.revokeObjectURL(a.href)}$('export').onclick=exportHtml;applyLevel();
+</script>
+</body></html>
